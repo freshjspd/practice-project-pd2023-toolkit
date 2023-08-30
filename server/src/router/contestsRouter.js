@@ -1,6 +1,7 @@
 const { Router } = require('express');
 const { queryParser } = require('express-query-parser');
 const checkToken = require('../middlewares/checkToken');
+const basicMiddlewares = require('../middlewares/basicMiddlewares');
 const contestController = require('../controllers/contestController');
 
 const contestsRouter = Router();
@@ -15,6 +16,13 @@ contestsRouter.get(
     parseNumber: true,
   }),
   contestController.getCustomersContests
+);
+
+contestsRouter.get(
+  '/:contestId',
+  checkToken.checkToken,
+  basicMiddlewares.canGetContest,
+  contestController.getContestById
 );
 
 module.exports = contestsRouter;
