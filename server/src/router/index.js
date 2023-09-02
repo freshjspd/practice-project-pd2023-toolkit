@@ -8,6 +8,7 @@ const validators = require('../middlewares/validators');
 const chatController = require('../controllers/chatController');
 const upload = require('../utils/fileUpload');
 const contestsRouter = require('./contestsRouter');
+const offersRouter = require('./offersRouter');
 const router = express.Router();
 
 router.post(
@@ -20,6 +21,7 @@ router.post(
 router.post('/login', validators.validateLogin, userController.login);
 
 router.use('/contests', contestsRouter);
+router.use('/offers', offersRouter);
 
 //--- contests ---------------------------------
 // GET /contests/data
