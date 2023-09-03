@@ -1,6 +1,10 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import * as restController from '../../api/rest/restController';
-import { pendingReducer, rejectedReducer } from '../../utils/store';
+import {
+  decorateAsyncThunk,
+  pendingReducer,
+  rejectedReducer,
+} from '../../utils/store';
 
 const OFFERS_SLICE_NAME = 'offers';
 
@@ -10,20 +14,13 @@ const initialState = {
   offers: [],
 };
 
-export const getOffers = createAsyncThunk(
-  `${OFFERS_SLICE_NAME}/get`,
-  async (payload, { rejectWithValue }) => {
-    try {
-      const { data } = await restController.getOffers();
-      return data;
-    } catch (err) {
-      return rejectWithValue({
-        data: err?.response?.data ?? 'Gateway Timeout',
-        status: err?.response?.status ?? 504,
-      });
-    }
-  }
-);
+export const getOffers = decorateAsyncThunk({
+  key: `${OFFERS_SLICE_NAME}/get`,
+  thunk: async () => {
+    const { data } = await restController.getOffers();
+    return data;
+  },
+});
 
 const extraReducers = (builder) => {
   builder.addCase(getOffers.pending, pendingReducer);
