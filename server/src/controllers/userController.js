@@ -161,6 +161,7 @@ module.exports.payment = async (req, res, next) => {
         createdAt: moment().format('YYYY-MM-DD HH:mm'),
         prize,
       });
+      // TODO add Transaction
     });
     await db.Contests.bulkCreate(req.body.contests, transaction);
     transaction.commit();
@@ -233,10 +234,16 @@ module.exports.cashout = async (req, res, next) => {
       },
       transaction
     );
+    // TODO add Transaction
     transaction.commit();
     res.send({ balance: updatedUser.balance });
   } catch (err) {
     transaction.rollback();
     next(err);
   }
+};
+
+module.exports.getTransactions = async (req, res, next) => {
+  const { userId } = req.tokenData;
+  console.log('userId :>> ', userId);
 };
