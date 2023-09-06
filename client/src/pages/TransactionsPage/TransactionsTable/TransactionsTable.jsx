@@ -1,17 +1,21 @@
 import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { format } from 'date-fns';
-import { getTransactions } from './../../../store/slices/transactionsSlice';
+import { getTransactions } from '../../../store/slices/transactionsSlice';
 import Spinner from '../../../components/Spinner/Spinner';
+import { bindActionCreators } from 'redux';
 
-function TransactionsTable({
-  isFetching,
-  error,
-  transactions,
-  getTransactions,
-}) {
+function TransactionsTable () {
+  // ! In app must be unified code style
+  const { isFetching, error, transactions } = useSelector(
+    ({ transactionsList }) => transactionsList
+  );
+
+  const dispatch = useDispatch();
+  const { get } = bindActionCreators({ get: getTransactions }, dispatch);
+
   useEffect(() => {
-    getTransactions();
+    get();
   }, []);
 
   return (
@@ -32,7 +36,7 @@ function TransactionsTable({
             </tr>
           </thead>
           <tbody>
-            {transactions.map((t) => (
+            {transactions.map(t => (
               <tr key={t.id}>
                 <td key={1}>{t.amount}</td>
                 <td key={2}>{t.operationType}</td>
@@ -55,10 +59,4 @@ function TransactionsTable({
   );
 }
 
-const mapStateToProps = ({ transactionsList }) => transactionsList;
-
-const mapDispatchToProps = (dispatch) => ({
-  getTransactions: () => dispatch(getTransactions()),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(TransactionsTable);
+export default TransactionsTable;
