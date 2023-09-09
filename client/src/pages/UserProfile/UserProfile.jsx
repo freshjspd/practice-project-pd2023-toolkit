@@ -10,8 +10,8 @@ import { cashOut, clearPaymentStore } from '../../store/slices/paymentSlice';
 import { changeProfileViewMode } from '../../store/slices/userProfileSlice';
 import Error from '../../components/Error/Error';
 
-const UserProfile = (props) => {
-  const pay = (values) => {
+const UserProfile = props => {
+  const pay = values => {
     const { number, expiry, cvc, sum } = values;
     props.cashOut({
       number,
@@ -29,6 +29,7 @@ const UserProfile = (props) => {
     error,
     clearPaymentStore,
   } = props;
+
   return (
     <div>
       <Header />
@@ -58,7 +59,28 @@ const UserProfile = (props) => {
             )}
           </div>
         </div>
-        {profileViewMode === CONSTANTS.USER_INFO_MODE ? (
+        {profileViewMode === CONSTANTS.USER_INFO_MODE && <UserInfo />}
+        {profileViewMode === CONSTANTS.CASHOUT_MODE && (
+          <div className={styles.container}>
+            {parseInt(balance) === 0 ? (
+              <span className={styles.notMoney}>
+                There is no money on your balance
+              </span>
+            ) : (
+              <div>
+                {error && (
+                  <Error
+                    data={error.data}
+                    status={error.status}
+                    clearError={clearPaymentStore}
+                  />
+                )}
+                <PayForm sendRequest={pay} />
+              </div>
+            )}
+          </div>
+        )}
+        {/* {profileViewMode === CONSTANTS.USER_INFO_MODE ? (
           <UserInfo />
         ) : (
           <div className={styles.container}>
@@ -79,13 +101,13 @@ const UserProfile = (props) => {
               </div>
             )}
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   const { balance, role } = state.userStore.data;
   const { profileViewMode } = state.userProfile;
   const { error } = state.payment;
@@ -97,9 +119,9 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  cashOut: (data) => dispatch(cashOut(data)),
-  changeProfileViewMode: (data) => dispatch(changeProfileViewMode(data)),
+const mapDispatchToProps = dispatch => ({
+  cashOut: data => dispatch(cashOut(data)),
+  changeProfileViewMode: data => dispatch(changeProfileViewMode(data)),
   clearPaymentStore: () => dispatch(clearPaymentStore()),
 });
 
