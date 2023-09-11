@@ -11,7 +11,7 @@
   "test": {
     "username": "postgres",
     "password": "admin",
-    "database": "todo-test",
+    "database": "squadhelp-pd2023-test",
     "host": "localhost",
     "dialect": "postgres",
     "operatorsAliases": "Op",
