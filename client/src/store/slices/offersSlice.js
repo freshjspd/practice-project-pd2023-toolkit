@@ -22,7 +22,7 @@ export const getOffers = decorateAsyncThunk({
   },
 });
 
-const extraReducers = (builder) => {
+const extraReducers = builder => {
   builder.addCase(getOffers.pending, pendingReducer);
   builder.addCase(getOffers.fulfilled, (state, { payload }) => {
     state.isFetching = false;

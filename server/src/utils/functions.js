@@ -35,7 +35,7 @@ module.exports.createWhereForAllContests = (
   return object;
 };
 
-function getPredicateTypes(index) {
+function getPredicateTypes (index) {
   return { [bd.Sequelize.Op.or]: [types[index].split(',')] };
 }
 
@@ -50,7 +50,7 @@ const types = [
   'name,logo',
 ];
 
-module.exports.mapStringToValues = (v) => {
+module.exports.mapStringToValues = v => {
   if (!Number.isNaN(Number(v))) {
     return Number(v);
   }

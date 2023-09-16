@@ -53,7 +53,7 @@ module.exports.updateOfferStatus = async (data, predicate, transaction) => {
   }
 };
 
-module.exports.createOffer = async (data) => {
+module.exports.createOffer = async data => {
   const result = await db.Offers.create(data);
   if (!result) {
     throw new ServerError('cannot create new Offer');

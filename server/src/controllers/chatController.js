@@ -31,7 +31,7 @@ module.exports.addMessage = async (req, res, next) => {
     await message.save();
     message._doc.participants = participants;
     const interlocutorId = participants.filter(
-      (participant) => participant !== req.tokenData.userId
+      participant => participant !== req.tokenData.userId
     )[0];
     const preview = {
       _id: newConversation._id,
@@ -155,10 +155,10 @@ module.exports.getPreview = async (req, res, next) => {
       },
     ]);
     const interlocutors = [];
-    conversations.forEach((conversation) => {
+    conversations.forEach(conversation => {
       interlocutors.push(
         conversation.participants.find(
-          (participant) => participant !== req.tokenData.userId
+          participant => participant !== req.tokenData.userId
         )
       );
     });
@@ -168,8 +168,8 @@ module.exports.getPreview = async (req, res, next) => {
       },
       attributes: ['id', 'firstName', 'lastName', 'displayName', 'avatar'],
     });
-    conversations.forEach((conversation) => {
-      senders.forEach((sender) => {
+    conversations.forEach(conversation => {
+      senders.forEach(sender => {
         if (conversation.participants.includes(sender.dataValues.id)) {
           conversation.interlocutor = {
             id: sender.dataValues.id,
@@ -198,7 +198,7 @@ module.exports.blackList = async (req, res, next) => {
     );
     res.send(chat);
     const interlocutorId = req.body.participants.filter(
-      (participant) => participant !== req.tokenData.userId
+      participant => participant !== req.tokenData.userId
     )[0];
     controller.getChatController().emitChangeBlockStatus(interlocutorId, chat);
   } catch (err) {
